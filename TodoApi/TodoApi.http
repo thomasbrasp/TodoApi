@@ -1,6 +1,6 @@
 @TodoApi_HostAddress = http://localhost:5062
 
-POST {{TodoApi_HostAddress}}/todoitems
+POST {{TodoApi_HostAddress}}/api/todos
 Content-Type: application/json
 
 {
@@ -11,15 +11,15 @@ Content-Type: application/json
 
 ###
 
-GET {{TodoApi_HostAddress}}/todoitems
+GET {{TodoApi_HostAddress}}/api/todos
 
 ###
 
-GET {{TodoApi_HostAddress}}/todoitems/1
+GET {{TodoApi_HostAddress}}/api/todos/1
 
 ###
 
-PUT {{TodoApi_HostAddress}}/todoitems/1
+PUT {{TodoApi_HostAddress}}/api/todos/1
 Content-Type: application/json
 
 {
@@ -31,6 +31,8 @@ Content-Type: application/json
 
 ###
 
-DELETE {{TodoApi_HostAddress}}/todoitems/1
+DELETE {{TodoApi_HostAddress}}/api/todos/1
 
 ###
+
+GET {{TodoApi_HostAddress}}/api/todos/complete
