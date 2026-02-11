@@ -11,6 +11,17 @@ Content-Type: application/json
 
 ###
 
+POST {{TodoApi_HostAddress}}/api/todos
+Content-Type: application/json
+
+{
+  "name":"walk cat",
+  "isComplete": false,
+  "secret": "a secret"
+}
+
+###
+
 GET {{TodoApi_HostAddress}}/api/todos
 
 ###

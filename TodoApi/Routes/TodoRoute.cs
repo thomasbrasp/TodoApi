@@ -65,6 +65,16 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
             })
             .Produces((int)HttpStatusCode.NoContent);
 
+        group.MapPut("{id}/toggle-complete", async (int id, TodoItem todoItem, TodoDb db) =>
+            {
+                var todo = await db.Todos.FindAsync(id);
+                
+                todo.Name = todoItem.Name;
+                todo.IsComplete = !todoItem.IsComplete;
+                
+                await db.SaveChangesAsync();
+            })
+            .Produces((int)HttpStatusCode.NoContent);
 
         //delete todo
         group.MapDelete("{id}", async (int id, TodoDb db) =>
