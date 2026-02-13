@@ -1,0 +1,6 @@
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Todo\obj\Debug\net9.0\Todo.csproj.AssemblyReference.cache
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Todo\obj\Debug\net9.0\Todo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Todo\obj\Debug\net9.0\Todo.AssemblyInfoInputs.cache
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Todo\obj\Debug\net9.0\Todo.AssemblyInfo.cs
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Todo\obj\Debug\net9.0\Todo.csproj.CoreCompileInputs.cache
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Todo\obj\Debug\net9.0\Todo.sourcelink.json

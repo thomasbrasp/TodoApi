@@ -1,0 +1,13 @@
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\bin\Debug\net9.0\Thomas.Todo.deps.json
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\bin\Debug\net9.0\Thomas.Todo.dll
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\bin\Debug\net9.0\Thomas.Todo.pdb
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\Thomas.Todo.csproj.AssemblyReference.cache
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\Thomas.Todo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\Thomas.Todo.AssemblyInfoInputs.cache
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\Thomas.Todo.AssemblyInfo.cs
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\Thomas.Todo.csproj.CoreCompileInputs.cache
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\Thomas.Todo.sourcelink.json
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\Thomas.Todo.dll
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\refint\Thomas.Todo.dll
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\Thomas.Todo.pdb
+C:\Users\Thomas\RiderProjects\TodoApi\backend\Thomas.Todo\obj\Debug\net9.0\ref\Thomas.Todo.dll
