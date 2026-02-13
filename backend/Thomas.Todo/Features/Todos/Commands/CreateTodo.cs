@@ -6,8 +6,7 @@ namespace Todo.Features.Todos.Commands;
 
 public static class CreateTodo
 {
-    public sealed record Command(TodoItem TodoItem) : IRequest<TodoItem>;
-
+    public sealed record Command(string Name, bool IsComplete) : IRequest<TodoItem>;
 
     internal sealed class Handler(TodoDbContext context) : IRequestHandler<Command, TodoItem>
     {
@@ -15,8 +14,8 @@ public static class CreateTodo
         {
             var todo = new Entities.Todo
             {
-                    IsComplete = request.TodoItem.IsComplete,
-                    Name = request.TodoItem.Name
+                    IsComplete = request.IsComplete,
+                    Name = request.Name
             };
 
             context.Add(todo);
