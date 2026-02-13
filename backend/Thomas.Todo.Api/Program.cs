@@ -1,8 +1,8 @@
-using System.Data;
 using System.Reflection;
-using MediatR.Wrappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Todo.Extensions;
+using Todo.Infrastructure.Data;
 using TodoApi;
 using TodoApi.Extensions;
 
@@ -16,7 +16,9 @@ var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
+builder.Services.ConfigureModule();
+
+builder.Services.AddDbContext<TodoDbContext>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddControllers();
@@ -39,13 +41,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddMediatR(serviceConfiguration =>
-{
-    serviceConfiguration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-});
-
-
-
 var app = builder.Build();
 
 app.UseSwagger();
@@ -56,8 +51,6 @@ app.UseCors(myAllowSpecificOrigins);
 app.MapGroup("api")
         .ConfigureEndpoints(Assembly.GetExecutingAssembly());
 
-
-var todoItems = app.MapGroup("/todoitems");
 
 app.Run();
 

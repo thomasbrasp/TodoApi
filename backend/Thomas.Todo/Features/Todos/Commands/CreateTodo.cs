@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Todo.Features.Todos.Entities;
 using Todo.Features.Todos.Models;
 using Todo.Infrastructure.Data;
 
@@ -9,9 +8,9 @@ public static class CreateTodo
 {
     public sealed record Command(TodoItem TodoItem) : IRequest<TodoItem>;
 
+
     internal sealed class Handler(TodoDbContext context) : IRequestHandler<Command, TodoItem>
     {
-
         public async Task<TodoItem> Handle(Command request, CancellationToken cancellationToken)
         {
             var todo = new Entities.Todo
@@ -26,5 +25,4 @@ public static class CreateTodo
             return new TodoItem(todo);
         }
     }
-
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Todo.Features.Todos.Commands;
 using Todo.Features.Todos.Entities;
 using Todo.Features.Todos.Models;
+using Todo.Infrastructure.Data;
 using TodoApi.Interfaces;
 
 namespace TodoApi.Routes;
@@ -20,17 +21,40 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
         //create todo
         group.MapPost("", async ([FromServices] IMediator mediator, [FromBody] CreateTodo.Command command) =>
                 {
-
                     var result = await mediator.Send(command);
                     return result;
                 })
                 .Produces<TodoItem>();
 
+        //update todo
+        group.MapPut("{id}", async ([FromServices] IMediator mediator, [FromBody] UpdateTodo.Command command) =>
+                {
+                    await mediator.Send(command);
+                    return Results.NoContent();
+                })
+                .Produces((int)HttpStatusCode.NoContent);
+
+        //delete todo
+        group.MapDelete("{id}", async ([FromServices] IMediator mediator, [FromBody] DeleteTodo.Command command) =>
+                {
+                    await mediator.Send(command);
+                    return Results.NoContent();
+                })
+                .Produces((int)HttpStatusCode.NoContent);
+
+
+        //toggle todo complete
+        group.MapPut("{id}/toggle-complete", async ([FromServices] IMediator mediator, [FromBody] ToggleTodoComplete.Command command) =>
+                {
+                    await mediator.Send(command);
+                    return Results.NoContent();
+                })
+                .Produces((int)HttpStatusCode.NoContent);
 
         #endregion
 
 
-        group.MapGet("", async (TodoDb db) =>
+        group.MapGet("", async (TodoDbContext db) =>
                 {
                     return await db.Set<Todo.Features.Todos.Entities.Todo>()
                             .AsNoTracking()
@@ -40,7 +64,7 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
                 .Produces<List<TodoItem>>();
 
 
-        group.MapGet("{id}", async (TodoDb db, int id) =>
+        group.MapGet("{id}", async (TodoDbContext db, int id) =>
                 {
                     return await db.Set<Todo.Features.Todos.Entities.Todo>()
                             .AsNoTracking()
@@ -50,7 +74,7 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
                 })
                 .Produces<TodoItem>();
 
-        group.MapGet("/complete", async (TodoDb db) =>
+        group.MapGet("/complete", async (TodoDbContext db) =>
                 {
                     return await db.Set<Todo.Features.Todos.Entities.Todo>()
                             .AsNoTracking()
@@ -59,55 +83,6 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
                             .ToListAsync();
                 })
                 .Produces<List<TodoItem>>();
-
-        // //create todo
-        // group.MapPost("", async (TodoItem todoItem, TodoDb db) =>
-        //         {
-        //             var todo = new Thomas.Todo.Features.Thomas.Todo.Entities.Thomas.Todo
-        //             {
-        //                     IsComplete = todoItem.IsComplete,
-        //                     Name = todoItem.Name
-        //             };
-        //
-        //             db.Todos.Add(todo);
-        //             await db.SaveChangesAsync();
-        //         })
-        //         .Produces<Thomas.Todo.Features.Thomas.Todo.Entities.Thomas.Todo>();
-
-        //update todo
-        group.MapPut("{id}", async (int id, TodoItem todoItem, TodoDb db) =>
-                {
-                    var todo = await db.Todos.FindAsync(id);
-
-                    todo.Name = todoItem.Name;
-                    todo.IsComplete = todoItem.IsComplete;
-
-                    await db.SaveChangesAsync();
-                })
-                .Produces((int)HttpStatusCode.NoContent);
-
-        group.MapPut("{id}/toggle-complete", async (int id, TodoItem todoItem, TodoDb db) =>
-                {
-                    var todo = await db.Todos.FindAsync(id);
-
-                    todo.Name = todoItem.Name;
-                    todo.IsComplete = !todoItem.IsComplete;
-
-                    await db.SaveChangesAsync();
-                })
-                .Produces((int)HttpStatusCode.NoContent);
-
-        //delete todo
-        group.MapDelete("{id}", async (int id, TodoDb db) =>
-                {
-                    if (await db.Todos.FindAsync(id) is Todo.Features.Todos.Entities.Todo todo)
-                    {
-                        db.Todos.Remove(todo);
-                        await db.SaveChangesAsync();
-                    }
-                })
-                .Produces((int)HttpStatusCode.NoContent);
-
 
         return builder;
     }
