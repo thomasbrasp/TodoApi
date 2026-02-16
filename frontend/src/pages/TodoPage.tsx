@@ -71,7 +71,7 @@ const TodoPage = () => {
       <div className="flex flex-col gap-2">
         {data &&
           data.map((todo) => (
-            <div key={todo.id!} className="flex gap-2">
+            <div key={todo.id} className="flex gap-2">
               <Checkbox
                 checked={todo.isComplete}
                 onCheckedChange={async () => {
