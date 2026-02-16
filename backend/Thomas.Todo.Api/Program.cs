@@ -1,8 +1,8 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Todo.Extensions;
 using Todo.Infrastructure.Data;
+using Todo.Infrastructure.Extensions;
 using TodoApi;
 using TodoApi.Extensions;
 
@@ -29,6 +29,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMvc();
 
 builder.Services.AddSwaggerGen(options => { options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }); });
+builder.Services.AddSwaggerGen(options =>
+{
+    options.CustomSchemaIds(type =>
+            type.FullName!.Replace("Thomas.Todo.Features.", string.Empty).Replace("+", "."));
+    options.SupportNonNullableReferenceTypes();
+    options.UseAllOfToExtendReferenceSchemas();
+    // options.SchemaFilter<SwaggerRequiredSchemaFilter>();
+    // options.DocumentFilter<HealthCheckDocumentFilter>();
+});
 
 builder.Services.AddCors(options =>
 {

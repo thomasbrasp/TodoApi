@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Todo.Features.Todos.Commands;
 using Todo.Features.Todos.Entities;
 using Todo.Features.Todos.Models;
+using Todo.Features.Todos.Queries;
 using Todo.Infrastructure.Data;
 using TodoApi.Interfaces;
 
@@ -27,7 +28,7 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
                 .Produces<TodoItem>();
 
         //update todo
-        group.MapPut("{id}", async ([FromServices] IMediator mediator, [FromBody] UpdateTodo.Command command) =>
+        group.MapPut("{id}", async (int id, [FromServices] IMediator mediator, [FromBody] UpdateTodo.Command command) =>
                 {
                     await mediator.Send(command);
                     return Results.NoContent();
@@ -35,7 +36,7 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
                 .Produces((int)HttpStatusCode.NoContent);
 
         //delete todo
-        group.MapDelete("{id}", async ([FromServices] IMediator mediator, [FromBody] DeleteTodo.Command command) =>
+        group.MapDelete("{id}", async (int id, [FromServices] IMediator mediator, [FromBody] DeleteTodo.Command command) =>
                 {
                     await mediator.Send(command);
                     return Results.NoContent();
@@ -44,7 +45,7 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
 
 
         //toggle todo complete
-        group.MapPut("{id}/toggle-complete", async ([FromServices] IMediator mediator, [FromBody] ToggleTodoComplete.Command command) =>
+        group.MapPut("{id}/toggle-complete", async (int id, [FromServices] IMediator mediator, [FromBody] ToggleTodoComplete.Command command) =>
                 {
                     await mediator.Send(command);
                     return Results.NoContent();
@@ -53,36 +54,40 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
 
         #endregion
 
+        #region queries
 
-        group.MapGet("", async (TodoDbContext db) =>
+        //gettodos
+        group.MapGet("", async ([FromServices] IMediator mediator) =>
                 {
-                    return await db.Set<Todo.Features.Todos.Entities.Todo>()
-                            .AsNoTracking()
-                            .Select(x => new TodoItem(x))
-                            .ToListAsync();
+                    var result = await mediator.Send(new GetTodos.Query());
+                    return Results.Ok(result);
                 })
                 .Produces<List<TodoItem>>();
 
-
-        group.MapGet("{id}", async (TodoDbContext db, int id) =>
+        //gettodo
+        group.MapGet("{id}", async (int id, [FromServices] IMediator mediator) =>
                 {
-                    return await db.Set<Todo.Features.Todos.Entities.Todo>()
-                            .AsNoTracking()
-                            .Where(x => x.Id == id)
-                            .Select(t => new TodoItem(t))
-                            .FirstOrDefaultAsync();
+                    var result = await mediator.Send(new GetTodo.Query(id));
+                    return Results.Ok(result);
                 })
                 .Produces<TodoItem>();
 
-        group.MapGet("/complete", async (TodoDbContext db) =>
+        //getcompletedtodos
+        group.MapGet("/complete", async ([FromServices] IMediator mediator) =>
                 {
-                    return await db.Set<Todo.Features.Todos.Entities.Todo>()
-                            .AsNoTracking()
-                            .Where(t => t.IsComplete == true)
-                            .Select(x => new TodoItem(x))
-                            .ToListAsync();
+                    var result = await mediator.Send(new GetCompletedTodos.Query());
+                    return Results.Ok(result);
                 })
                 .Produces<List<TodoItem>>();
+
+
+        #endregion
+
+
+
+
+
+
 
         return builder;
     }

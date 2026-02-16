@@ -4,9 +4,8 @@ POST {{TodoApi_HostAddress}}/api/todos
 Content-Type: application/json
 
 {
-  "name":"walk dog",
-  "isComplete":true,
-  "secret": "a secret"
+    "name": "walk dog",
+    "isComplete": true
 }
 
 ###
@@ -15,9 +14,8 @@ POST {{TodoApi_HostAddress}}/api/todos
 Content-Type: application/json
 
 {
-  "name":"walk cat",
-  "isComplete": false,
-  "secret": "a secret"
+  "name": "walk cat",
+  "isComplete": false
 }
 
 ###

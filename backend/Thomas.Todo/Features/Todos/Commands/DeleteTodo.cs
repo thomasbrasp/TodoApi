@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Todo.Features.Todos.Models;
 using Todo.Infrastructure.Data;
 
@@ -13,11 +14,10 @@ public class DeleteTodo
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            if (await context.Todos.FindAsync([request.Id], cancellationToken) is Entities.Todo todo)
-            {
-                context.Todos.Remove(todo);
-                await context.SaveChangesAsync(cancellationToken);
-            }
+            var todo = await context.Set<Entities.Todo>().FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+            if (todo != null) context.Todos.Remove(todo);
+            await context.SaveChangesAsync(cancellationToken);
         }
     }
 }
