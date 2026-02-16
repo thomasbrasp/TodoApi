@@ -6,19 +6,16 @@ using Todo.Infrastructure.Extensions;
 using TodoApi;
 using TodoApi.Extensions;
 
-//Todo: mediatr
-//Todo: eslint bct
-//Todo: prettier bct -> format on save
-//Todo: imports zoals bct
-
-
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.ConfigureModule();
+builder.Services.ConfigureModule(builder.Configuration);
 
-builder.Services.AddDbContext<TodoDbContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+// builder.Services.AddDbContext<TodoDbContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+builder.Services.AddDbContext<TodoDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddControllers();

@@ -8,7 +8,7 @@ public static class EndpointRouteBuilderExtensions
     public static void ConfigureEndpoints(this IEndpointRouteBuilder builder, Assembly assembly)
     {
         var types = assembly.GetTypes()
-            .Where(t => typeof(IEndpointRouteConfiguration).IsAssignableFrom(t) && !t.IsInterface);
+                .Where(t => typeof(IEndpointRouteConfiguration).IsAssignableFrom(t) && !t.IsInterface);
 
         foreach (var type in types)
         {
