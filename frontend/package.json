@@ -6,8 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "format": "prettier ./src --check",
+    "lint-timing": "set TIMING=1 && eslint --ext .ts,.tsx ./src --cache --cache-strategy metadata",
+    "lint:fix": "npm run lint -- --fix",
+    "lint:changed": "node ./scripts/lint-changed.cjs",
+    "format:fix": "prettier ./src --write",
     "orval:todo": "orval --config orval.config.ts --project todo"
   },
   "dependencies": {
@@ -41,6 +46,8 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "prettier-plugin-tailwindcss": "^0.7.1"
   }
 }
