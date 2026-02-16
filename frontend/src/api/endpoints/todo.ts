@@ -24,16 +24,26 @@ import type {
 } from '@tanstack/react-query';
 
 import { todoInstance } from '../../config/http';
-export interface Todo {
-  id?: number;
-  /** @nullable */
-  name?: string | null;
+export interface TodoFeaturesTodosCommandsCreateTodoCommand {
+  name?: string;
   isComplete?: boolean;
-  /** @nullable */
-  secret?: string | null;
 }
 
-export interface TodoItem {
+export interface TodoFeaturesTodosCommandsDeleteTodoCommand {
+  id?: number;
+}
+
+export interface TodoFeaturesTodosCommandsToggleTodoCompleteCommand {
+  id?: number;
+}
+
+export interface TodoFeaturesTodosCommandsUpdateTodoCommand {
+  id?: number;
+  name?: string;
+  isComplete?: boolean;
+}
+
+export interface TodoFeaturesTodosModelsTodoItem {
   id?: number;
   /** @nullable */
   name?: string | null;
@@ -44,13 +54,71 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
+export const postApiTodos = (
+    todoFeaturesTodosCommandsCreateTodoCommand: TodoFeaturesTodosCommandsCreateTodoCommand,
+ options?: SecondParameter<typeof todoInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return todoInstance<TodoFeaturesTodosModelsTodoItem>(
+      {url: `/api/todos`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: todoFeaturesTodosCommandsCreateTodoCommand, signal
+    },
+      options);
+    }
+  
+
+
+export const getPostApiTodosMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTodos>>, TError,{data: TodoFeaturesTodosCommandsCreateTodoCommand}, TContext>, request?: SecondParameter<typeof todoInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiTodos>>, TError,{data: TodoFeaturesTodosCommandsCreateTodoCommand}, TContext> => {
+
+const mutationKey = ['postApiTodos'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiTodos>>, {data: TodoFeaturesTodosCommandsCreateTodoCommand}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiTodos(data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiTodosMutationResult = NonNullable<Awaited<ReturnType<typeof postApiTodos>>>
+    export type PostApiTodosMutationBody = TodoFeaturesTodosCommandsCreateTodoCommand
+    export type PostApiTodosMutationError = unknown
+
+    export const usePostApiTodos = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTodos>>, TError,{data: TodoFeaturesTodosCommandsCreateTodoCommand}, TContext>, request?: SecondParameter<typeof todoInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiTodos>>,
+        TError,
+        {data: TodoFeaturesTodosCommandsCreateTodoCommand},
+        TContext
+      > => {
+      return useMutation(getPostApiTodosMutationOptions(options), queryClient);
+    }
+    
 export const getApiTodos = (
     
  options?: SecondParameter<typeof todoInstance>,signal?: AbortSignal
 ) => {
       
       
-      return todoInstance<TodoItem[]>(
+      return todoInstance<TodoFeaturesTodosModelsTodoItem[]>(
       {url: `/api/todos`, method: 'GET', signal
     },
       options);
@@ -129,27 +197,28 @@ export function useGetApiTodos<TData = Awaited<ReturnType<typeof getApiTodos>>, 
 
 
 
-export const postApiTodos = (
-    todoItem: TodoItem,
+export const putApiTodosId = (
+    id: number,
+    todoFeaturesTodosCommandsUpdateTodoCommand: TodoFeaturesTodosCommandsUpdateTodoCommand,
  options?: SecondParameter<typeof todoInstance>,signal?: AbortSignal
 ) => {
       
       
-      return todoInstance<Todo>(
-      {url: `/api/todos`, method: 'POST',
+      return todoInstance<void>(
+      {url: `/api/todos/${id}`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
-      data: todoItem, signal
+      data: todoFeaturesTodosCommandsUpdateTodoCommand, signal
     },
       options);
     }
   
 
 
-export const getPostApiTodosMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTodos>>, TError,{data: TodoItem}, TContext>, request?: SecondParameter<typeof todoInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiTodos>>, TError,{data: TodoItem}, TContext> => {
+export const getPutApiTodosIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTodosId>>, TError,{id: number;data: TodoFeaturesTodosCommandsUpdateTodoCommand}, TContext>, request?: SecondParameter<typeof todoInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiTodosId>>, TError,{id: number;data: TodoFeaturesTodosCommandsUpdateTodoCommand}, TContext> => {
 
-const mutationKey = ['postApiTodos'];
+const mutationKey = ['putApiTodosId'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -159,10 +228,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiTodos>>, {data: TodoItem}> = (props) => {
-          const {data} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiTodosId>>, {id: number;data: TodoFeaturesTodosCommandsUpdateTodoCommand}> = (props) => {
+          const {id,data} = props ?? {};
 
-          return  postApiTodos(data,requestOptions)
+          return  putApiTodosId(id,data,requestOptions)
         }
 
 
@@ -172,19 +241,78 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PostApiTodosMutationResult = NonNullable<Awaited<ReturnType<typeof postApiTodos>>>
-    export type PostApiTodosMutationBody = TodoItem
-    export type PostApiTodosMutationError = unknown
+    export type PutApiTodosIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiTodosId>>>
+    export type PutApiTodosIdMutationBody = TodoFeaturesTodosCommandsUpdateTodoCommand
+    export type PutApiTodosIdMutationError = unknown
 
-    export const usePostApiTodos = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTodos>>, TError,{data: TodoItem}, TContext>, request?: SecondParameter<typeof todoInstance>}
+    export const usePutApiTodosId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTodosId>>, TError,{id: number;data: TodoFeaturesTodosCommandsUpdateTodoCommand}, TContext>, request?: SecondParameter<typeof todoInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postApiTodos>>,
+        Awaited<ReturnType<typeof putApiTodosId>>,
         TError,
-        {data: TodoItem},
+        {id: number;data: TodoFeaturesTodosCommandsUpdateTodoCommand},
         TContext
       > => {
-      return useMutation(getPostApiTodosMutationOptions(options), queryClient);
+      return useMutation(getPutApiTodosIdMutationOptions(options), queryClient);
+    }
+    
+export const deleteApiTodosId = (
+    id: number,
+    todoFeaturesTodosCommandsDeleteTodoCommand: TodoFeaturesTodosCommandsDeleteTodoCommand,
+ options?: SecondParameter<typeof todoInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return todoInstance<void>(
+      {url: `/api/todos/${id}`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: todoFeaturesTodosCommandsDeleteTodoCommand, signal
+    },
+      options);
+    }
+  
+
+
+export const getDeleteApiTodosIdMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiTodosId>>, TError,{id: number;data: TodoFeaturesTodosCommandsDeleteTodoCommand}, TContext>, request?: SecondParameter<typeof todoInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiTodosId>>, TError,{id: number;data: TodoFeaturesTodosCommandsDeleteTodoCommand}, TContext> => {
+
+const mutationKey = ['deleteApiTodosId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiTodosId>>, {id: number;data: TodoFeaturesTodosCommandsDeleteTodoCommand}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  deleteApiTodosId(id,data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiTodosIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiTodosId>>>
+    export type DeleteApiTodosIdMutationBody = TodoFeaturesTodosCommandsDeleteTodoCommand
+    export type DeleteApiTodosIdMutationError = unknown
+
+    export const useDeleteApiTodosId = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiTodosId>>, TError,{id: number;data: TodoFeaturesTodosCommandsDeleteTodoCommand}, TContext>, request?: SecondParameter<typeof todoInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiTodosId>>,
+        TError,
+        {id: number;data: TodoFeaturesTodosCommandsDeleteTodoCommand},
+        TContext
+      > => {
+      return useMutation(getDeleteApiTodosIdMutationOptions(options), queryClient);
     }
     
 export const getApiTodosId = (
@@ -193,7 +321,7 @@ export const getApiTodosId = (
 ) => {
       
       
-      return todoInstance<TodoItem>(
+      return todoInstance<TodoFeaturesTodosModelsTodoItem>(
       {url: `/api/todos/${id}`, method: 'GET', signal
     },
       options);
@@ -272,28 +400,28 @@ export function useGetApiTodosId<TData = Awaited<ReturnType<typeof getApiTodosId
 
 
 
-export const putApiTodosId = (
+export const putApiTodosIdToggleComplete = (
     id: number,
-    todoItem: TodoItem,
+    todoFeaturesTodosCommandsToggleTodoCompleteCommand: TodoFeaturesTodosCommandsToggleTodoCompleteCommand,
  options?: SecondParameter<typeof todoInstance>,signal?: AbortSignal
 ) => {
       
       
       return todoInstance<void>(
-      {url: `/api/todos/${id}`, method: 'PUT',
+      {url: `/api/todos/${id}/toggle-complete`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
-      data: todoItem, signal
+      data: todoFeaturesTodosCommandsToggleTodoCompleteCommand, signal
     },
       options);
     }
   
 
 
-export const getPutApiTodosIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTodosId>>, TError,{id: number;data: TodoItem}, TContext>, request?: SecondParameter<typeof todoInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof putApiTodosId>>, TError,{id: number;data: TodoItem}, TContext> => {
+export const getPutApiTodosIdToggleCompleteMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>, TError,{id: number;data: TodoFeaturesTodosCommandsToggleTodoCompleteCommand}, TContext>, request?: SecondParameter<typeof todoInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>, TError,{id: number;data: TodoFeaturesTodosCommandsToggleTodoCompleteCommand}, TContext> => {
 
-const mutationKey = ['putApiTodosId'];
+const mutationKey = ['putApiTodosIdToggleComplete'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -303,10 +431,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiTodosId>>, {id: number;data: TodoItem}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>, {id: number;data: TodoFeaturesTodosCommandsToggleTodoCompleteCommand}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  putApiTodosId(id,data,requestOptions)
+          return  putApiTodosIdToggleComplete(id,data,requestOptions)
         }
 
 
@@ -316,75 +444,19 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PutApiTodosIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiTodosId>>>
-    export type PutApiTodosIdMutationBody = TodoItem
-    export type PutApiTodosIdMutationError = unknown
+    export type PutApiTodosIdToggleCompleteMutationResult = NonNullable<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>>
+    export type PutApiTodosIdToggleCompleteMutationBody = TodoFeaturesTodosCommandsToggleTodoCompleteCommand
+    export type PutApiTodosIdToggleCompleteMutationError = unknown
 
-    export const usePutApiTodosId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTodosId>>, TError,{id: number;data: TodoItem}, TContext>, request?: SecondParameter<typeof todoInstance>}
+    export const usePutApiTodosIdToggleComplete = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>, TError,{id: number;data: TodoFeaturesTodosCommandsToggleTodoCompleteCommand}, TContext>, request?: SecondParameter<typeof todoInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putApiTodosId>>,
+        Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>,
         TError,
-        {id: number;data: TodoItem},
+        {id: number;data: TodoFeaturesTodosCommandsToggleTodoCompleteCommand},
         TContext
       > => {
-      return useMutation(getPutApiTodosIdMutationOptions(options), queryClient);
-    }
-    
-export const deleteApiTodosId = (
-    id: number,
- options?: SecondParameter<typeof todoInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return todoInstance<void>(
-      {url: `/api/todos/${id}`, method: 'DELETE', signal
-    },
-      options);
-    }
-  
-
-
-export const getDeleteApiTodosIdMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiTodosId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof todoInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteApiTodosId>>, TError,{id: number}, TContext> => {
-
-const mutationKey = ['deleteApiTodosId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiTodosId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
-
-          return  deleteApiTodosId(id,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteApiTodosIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiTodosId>>>
-    
-    export type DeleteApiTodosIdMutationError = unknown
-
-    export const useDeleteApiTodosId = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiTodosId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof todoInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteApiTodosId>>,
-        TError,
-        {id: number},
-        TContext
-      > => {
-      return useMutation(getDeleteApiTodosIdMutationOptions(options), queryClient);
+      return useMutation(getPutApiTodosIdToggleCompleteMutationOptions(options), queryClient);
     }
     
 export const getApiTodosComplete = (
@@ -393,7 +465,7 @@ export const getApiTodosComplete = (
 ) => {
       
       
-      return todoInstance<TodoItem[]>(
+      return todoInstance<TodoFeaturesTodosModelsTodoItem[]>(
       {url: `/api/todos/complete`, method: 'GET', signal
     },
       options);
@@ -467,66 +539,3 @@ export function useGetApiTodosComplete<TData = Awaited<ReturnType<typeof getApiT
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
-
-
-
-
-
-export const putApiTodosIdToggleComplete = (
-    id: number,
-    todoItem: TodoItem,
- options?: SecondParameter<typeof todoInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return todoInstance<void>(
-      {url: `/api/todos/${id}/toggle-complete`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: todoItem, signal
-    },
-      options);
-    }
-  
-
-
-export const getPutApiTodosIdToggleCompleteMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>, TError,{id: number;data: TodoItem}, TContext>, request?: SecondParameter<typeof todoInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>, TError,{id: number;data: TodoItem}, TContext> => {
-
-const mutationKey = ['putApiTodosIdToggleComplete'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>, {id: number;data: TodoItem}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  putApiTodosIdToggleComplete(id,data,requestOptions)
-        }
-
-
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutApiTodosIdToggleCompleteMutationResult = NonNullable<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>>
-    export type PutApiTodosIdToggleCompleteMutationBody = TodoItem
-    export type PutApiTodosIdToggleCompleteMutationError = unknown
-
-    export const usePutApiTodosIdToggleComplete = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>, TError,{id: number;data: TodoItem}, TContext>, request?: SecondParameter<typeof todoInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putApiTodosIdToggleComplete>>,
-        TError,
-        {id: number;data: TodoItem},
-        TContext
-      > => {
-      return useMutation(getPutApiTodosIdToggleCompleteMutationOptions(options), queryClient);
-    }

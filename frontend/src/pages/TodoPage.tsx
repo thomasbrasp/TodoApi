@@ -1,12 +1,11 @@
 import z from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {type TodoItem, useDeleteApiTodosId, useGetApiTodos, usePostApiTodos, usePutApiTodosIdToggleComplete} from "@/api/endpoints/todo.ts";
+import {useDeleteApiTodosId, useGetApiTodos, usePostApiTodos, usePutApiTodosIdToggleComplete} from "@/api/endpoints/todo.ts";
 import {Controller, type SubmitHandler, useForm} from "react-hook-form";
 import {Input} from "@/components/ui/input.tsx";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {EditDialog} from "@/components/EditDialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
-
 
 const TodoSchema = z
     .object({
@@ -59,7 +58,7 @@ const TodoPage = () => {
     })
 
     const onSubmitCreateTodo: SubmitHandler<TodoSchemaType> = (data) => {
-        const todo: TodoItem = {
+        const todo = {
             isComplete: false,
             name: data.name
         }
@@ -91,7 +90,7 @@ const TodoPage = () => {
 
                         <span style={{textDecoration: todo.isComplete ? "line-through" : "none"}}>{todo.name}</span>
                         <EditDialog id={todo.id!} name={todo.name!} />
-                        <Button onClick={() => deleteTodo({id: todo.id!})}>Delete</Button>
+                        <Button onClick={() => deleteTodo({id: todo.id!, data: {id: todo.id!}})}>Delete</Button>
 
                     </div>
                     ))}

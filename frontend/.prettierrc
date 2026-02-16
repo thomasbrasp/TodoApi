@@ -27,7 +27,7 @@
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "tailwindStylesheet": "./src/v2/index.css",
+  "tailwindStylesheet": "./src/index.css",
   "tailwindFunctions": [
     "cva",
     "tw"

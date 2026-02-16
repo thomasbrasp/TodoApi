@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label"
 import {zodResolver} from "@hookform/resolvers/zod";
 import z from "zod";
 import {Controller, type SubmitHandler, useForm} from "react-hook-form";
-import {type TodoItem, useGetApiTodos, usePutApiTodosId} from "@/api/endpoints/todo.ts";
+import { useGetApiTodos, usePutApiTodosId} from "@/api/endpoints/todo.ts";
 import {useState} from "react";
 
 
@@ -58,11 +58,12 @@ export function EditDialog({ id, name }: EditDialogProps) {
     })
 
     const onSubmitRenameTodo: SubmitHandler<TodoSchemaType> = async (data) => {
-        const todo: TodoItem = {
+        const todo = {
+            id: id,
             isComplete: false,
             name: data.name
         }
-        await renameTodo({ id: id, data: todo });
+        await renameTodo({id: id, data:todo});
     }
 
     return (
