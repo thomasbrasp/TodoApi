@@ -9,7 +9,6 @@ public class TodoConfiguration : IEntityTypeConfiguration<Entities.Todo>
         builder.ToTable("Todos", "todos");
         
         builder.HasKey(t => t.Id);
-        builder.Property(t => t.Id).ValueGeneratedOnAdd();
         builder.Property(t => t.Name).HasMaxLength(10);
         builder.Property(t => t.Secret).HasMaxLength(20);
     }

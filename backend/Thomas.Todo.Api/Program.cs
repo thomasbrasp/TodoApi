@@ -5,6 +5,11 @@ using TodoApi.Extensions;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+//TODO:
+//exceptionmapper
+// user errorhook
+//snackbar
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureModule(builder.Configuration);
