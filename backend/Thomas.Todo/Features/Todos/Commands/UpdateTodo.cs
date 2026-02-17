@@ -6,7 +6,7 @@ namespace Todo.Features.Todos.Commands;
 
 public class UpdateTodo
 {
-    public sealed record Command(int Id, string Name, bool IsComplete ) : IRequest;
+    public sealed record Command(int Id, string Name, bool IsComplete) : IRequest;
 
     internal sealed class Handler(TodoDbContext context) : IRequestHandler<Command>
     {

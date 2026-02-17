@@ -7,7 +7,7 @@ namespace Todo.Features.Todos.Queries;
 
 public class GetCompletedTodos
 {
-    public sealed record Query : IRequest<List<TodoItem>>;
+    public sealed record Query() : IRequest<List<TodoItem>>;
 
 
     internal sealed class Handler(TodoDbContext context) : IRequestHandler<Query, List<TodoItem>>

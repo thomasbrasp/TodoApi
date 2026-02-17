@@ -1,9 +1,6 @@
 using System.Reflection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Todo.Infrastructure.Data;
 using Todo.Infrastructure.Extensions;
-using TodoApi;
 using TodoApi.Extensions;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -13,8 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureModule(builder.Configuration);
 
 // builder.Services.AddDbContext<TodoDbContext>(opt => opt.UseInMemoryDatabase("TodoList"));
-builder.Services.AddDbContext<TodoDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
