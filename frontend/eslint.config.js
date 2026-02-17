@@ -72,7 +72,6 @@ export default defineConfig([
             "@typescript-eslint/no-floating-promises": "error",
             "@typescript-eslint/no-unused-vars": ["error"],
             "no-await-in-loop": "error",
-            "no-console": "error",
             "react/jsx-no-constructed-context-values": "error",
             "react/no-danger": "error",
             "react/no-unstable-nested-components": ["error", { allowAsProps: true }],

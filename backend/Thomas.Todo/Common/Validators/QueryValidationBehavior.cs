@@ -1,0 +1,20 @@
+using FluentValidation;
+using MediatR;
+
+namespace FB.BCT.Sim.Common.Validators;
+
+public sealed class QueryValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+    : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+{
+    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        if (!validators.Any())
+        {
+            return next();
+        }
+
+        new RequestValidationService<TRequest>(request, validators).Validate();
+        return next();
+    }
+}

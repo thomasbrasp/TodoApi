@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Todo.Features.Todos.Models;
 using Todo.Infrastructure.Data;
 
@@ -22,6 +23,15 @@ public static class CreateTodo
             await context.SaveChangesAsync(cancellationToken);
 
             return new TodoItem(todo);
+        }
+    }
+    
+    public sealed class Validator : AbstractValidator<Command>
+    {
+        public Validator()
+        {
+            RuleFor(cmd => cmd.Name).NotEmpty().WithMessage("Name is verplicht");
+            RuleFor(cmd => cmd.IsComplete).NotEmpty().WithMessage("IsComplete is verplicht");
         }
     }
 }

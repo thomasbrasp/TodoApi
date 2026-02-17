@@ -34,7 +34,7 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
 
         //delete todo
         group.MapPut("remove",
-                async (int id, [FromServices] IMediator mediator, [FromBody] DeleteTodo.Command command) =>
+                async ([FromServices] IMediator mediator, [FromBody] DeleteTodo.Command command) =>
                 {
                     await mediator.Send(command);
                     return Results.NoContent();
@@ -56,7 +56,7 @@ public sealed class TodosRoutes : IEndpointRouteConfiguration
         #region queries
 
         //gettodos
-        group.MapGet("", async ([FromServices] IMediator mediator, [FromQuery] bool isComplete ) =>
+        group.MapGet("", async ([FromServices] IMediator mediator, [FromQuery] bool? isComplete ) =>
             {
                 var result = await mediator.Send(new GetTodos.Query(isComplete));
                 return Results.Ok(result);

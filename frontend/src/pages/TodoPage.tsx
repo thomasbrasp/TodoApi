@@ -1,4 +1,4 @@
-import { useDeleteApiTodosId, useGetApiTodos, usePostApiTodos, usePutApiTodosIdToggleComplete } from "@/api/endpoints/todo.ts";
+import { useGetApiTodos, usePostApiTodos, usePutApiTodosRemove, usePutApiTodosToggle } from "@/api/endpoints/todo.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
@@ -23,11 +23,11 @@ const TodoPage = () => {
       onSuccess: async () => {
         await refetchTodos();
       },
-      onError: () => console.log("onError triggered"),
+      onError: () => console.log("onError triggered postTodo"),
     },
   });
 
-  const { mutateAsync: toggleCompleted } = usePutApiTodosIdToggleComplete({
+  const { mutateAsync: toggleCompleted } = usePutApiTodosToggle({
     mutation: {
       onSuccess: async () => {
         await refetchTodos();
@@ -36,7 +36,7 @@ const TodoPage = () => {
     },
   });
 
-  const { mutateAsync: deleteTodo } = useDeleteApiTodosId({
+  const { mutateAsync: deleteTodo } = usePutApiTodosRemove({
     mutation: {
       onSuccess: async () => {
         await refetchTodos();
@@ -75,14 +75,14 @@ const TodoPage = () => {
               <Checkbox
                 checked={todo.isComplete}
                 onCheckedChange={async () => {
-                  await toggleCompleted({ id: todo.id!, data: { ...todo } });
+                  await toggleCompleted({ params: {id: todo.id!}, data: { ...todo } });
                   await refetchTodos();
                 }}
               />
 
               <span style={{ textDecoration: todo.isComplete ? "line-through" : "none" }}>{todo.name}</span>
               <EditDialog id={todo.id!} name={todo.name!} />
-              <Button onClick={() => deleteTodo({ id: todo.id!, data: { id: todo.id! } })}>Delete</Button>
+              <Button onClick={() => deleteTodo({ data: { id: todo.id! } })}>Delete</Button>
             </div>
           ))}
       </div>

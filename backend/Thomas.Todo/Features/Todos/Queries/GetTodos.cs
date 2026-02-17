@@ -7,7 +7,7 @@ namespace Todo.Features.Todos.Queries;
 
 public class GetTodos
 {
-    public sealed record Query(bool IsComplete) : IRequest<List<TodoItem>>;
+    public sealed record Query(bool? IsComplete) : IRequest<List<TodoItem>>;
 
     internal sealed class Handler(TodoDbContext context) : IRequestHandler<Query, List<TodoItem>>
     {
@@ -15,7 +15,7 @@ public class GetTodos
         {
             var todos = context.Set<Todo.Features.Todos.Entities.Todo>().AsNoTracking();
 
-            if (request.IsComplete)
+            if (request.IsComplete.HasValue)
             {
                 todos = todos.Where(t => t.IsComplete == true);
             }

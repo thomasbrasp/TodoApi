@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useGetApiTodos, usePutApiTodosId } from "@/api/endpoints/todo.ts";
+import { useGetApiTodos, usePutApiTodosUpdate } from "@/api/endpoints/todo.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
@@ -43,7 +43,7 @@ export function EditDialog({ id, name }: EditDialogProps) {
     },
   });
 
-  const { mutateAsync: renameTodo } = usePutApiTodosId({
+  const { mutateAsync: renameTodo } = usePutApiTodosUpdate({
     mutation: {
       onSuccess: async () => {
         setOpen(false);
@@ -59,7 +59,7 @@ export function EditDialog({ id, name }: EditDialogProps) {
       isComplete: false,
       name: data.name,
     };
-    await renameTodo({ id: id, data: todo });
+    await renameTodo({ params: {id: id}, data: todo });
   };
 
   return (
@@ -71,7 +71,7 @@ export function EditDialog({ id, name }: EditDialogProps) {
         <form onSubmit={handleSubmit(onSubmitRenameTodo, console.log)}>
           <DialogHeader>
             <DialogTitle>Change todo name</DialogTitle>
-            <DialogDescription>Here you can rename your todo's title</DialogDescription>
+            <DialogDescription>Here you can rename your todo&#39;s title</DialogDescription>
           </DialogHeader>
           <FieldGroup>
             <Field>

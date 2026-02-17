@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
+using FB.BCT.Sim.Common.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Todo.Infrastructure.Data;
-using Todo.Validators;
 
 namespace Todo.Infrastructure.Extensions;
 
